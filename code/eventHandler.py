@@ -3,7 +3,7 @@ import settings
 from pygame import K_UP, K_DOWN, K_SPACE
 from settings import width, height
 keys  = [False, False, False]
-class Keyboard:
+class event:
     def manage(self,gun,bullet):
         for event in pygame.event.get(): 
             if event.type==pygame.QUIT:
@@ -31,23 +31,12 @@ class Keyboard:
                     print("SPACE released")
                     
         if keys[0]:
-            if gun.position[1] - 10 > 0:
-                gun.position[1] -= 10
-            print("Gun: " + str(gun.position))
+            gun.moveUp(gun.position)
         elif keys[1]:
-            if gun.position[1] + 10 < height - 40:
-                gun.position[1] +=10
-            print("Gun: " + str(gun.position))
+            gun.moveDown(gun.position)
         if keys[2] and not bullet.fired:
-            bullet.fired = True
-            bullet.position = [gun.position[0]-20,gun.position[1]+10]
-            print("Bullet: " + str(bullet.position))
-            print("Bullet Fired")
+            bullet.getFired(gun)
         if bullet.fired and bullet.position[0] > -10:
-            bullet.position[0] -= 10
-            print("Bullet: " + str(bullet.position))
+            bullet.fly()
         elif bullet.position[0] <= -10 and bullet.position[0] != -100:
-            bullet.position = bullet.startPosition
-            print("Bullet: " + str(bullet.position))
-            bullet.fired = False
-            print("Bullet out of window")
+            bullet.reload()

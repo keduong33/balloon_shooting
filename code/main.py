@@ -1,39 +1,63 @@
 import pygame
-import gun
-import keyboard
-import balloon
-from pygame import K_UP, K_DOWN, K_SPACE
-from settings import width, height, screen
+import tkinter
+from tkinter import messagebox
+import pygetwindow as gw
+#handmade libraries
+import gun, eventHandler, balloon, bullet
+from settings import screen
 '''
     This is the main file for the game
     Run this file to play the game
-    Gun size: 60 x 40 (w x h)
 '''
-class Bullet:
-    def __init__(self):
-        self.startPosition = [-100,-100]
-        self.position = self.startPosition
-        self.fired = False
-        
+def main():
+    direction = 1
+    while True:
+        clock.tick(30)
+        screen.fill(white)
+        screen.blit(gun.pic, gun.position)
+        screen.blit(bullet.pic, bullet.position)
+        screen.blit(balloon.pic, balloon.position)
+        pygame.display.flip()
+        event.manage(gun,bullet)
+        direction = balloon.move(direction)
+        if balloon.getHitBy(bullet):
+            print(bullet.missedShot)
+            missedShot = bullet.missedShot
+            replay = receiveInput(missedShot)
+            if replay == 'yes':
+                win = gw.getWindowsWithTitle('Balloon Shooting')[0]
+                win.activate()
+                restart()
+            else:
+                pygame.quit() 
+                exit(0)
+
+def restart():
+    bullet.reset()
+    balloon.reset()
+    gun.reset()
+    print("Restarted the game")
+    main()
+
+def receiveInput(missedShot):
+    parent = tkinter.Tk()
+    parent.overrideredirect(1)
+    parent.withdraw()
+    notification = 'You missed {ms} shots.\nWanna play again?'.format(ms = missedShot)
+    replay = messagebox.askquestion("The balloon is hit", notification) # Yes / No
+    print(replay)
+    return replay
+
 #initialisation
 pygame.init()
-
 gun = gun.Gun()
-bullet = Bullet()
+bullet = bullet.Bullet()
 balloon = balloon.Balloon()
-playerKeyboard = keyboard.Keyboard()
+event = eventHandler.event()
 white = [255,255,255]
 clock = pygame.time.Clock()
-bulletPic = pygame.image.load("../images/bullet.png")
-
-while True:
-    clock.tick(30)
-    screen.fill(white)
-    screen.blit(gun.pic, gun.position)
-    screen.blit(bulletPic, bullet.position)
-    screen.blit(balloon.pic, balloon.position)
-    pygame.display.flip()
-    
-    playerKeyboard.manage(gun,bullet)
-    balloon.move()
-
+title = 'Balloon Shooting'
+pygame.display.set_caption(title)
+icon = pygame.image.load("../images/smileyFace.jpg")
+pygame.display.set_icon(icon)
+main()
