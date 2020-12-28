@@ -1,5 +1,6 @@
 import pygame
 from settings import width, height
+import os.path
 '''
 Gun size: 60 x 40 (w x h)
 '''
@@ -17,7 +18,8 @@ class Gun:
     def createNewGun(self):
         self.startPosition = [540,200]
         self.position = self.startPosition
-        self.pic = pygame.image.load("../images/gun.png")
+        self.path = "../images/gun.png"
+        self.pic = pygame.image.load(self.path)
     def reset(self):
         self.createNewGun()
         

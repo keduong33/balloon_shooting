@@ -1,6 +1,7 @@
 import pygame
 import random
 from settings import width, height
+import os.path
 '''
     Class for the balloon object
     Balloon size: 40 x 40
@@ -35,6 +36,7 @@ class Balloon:
     def createNewBalloon(self):
         self.startPosition = [0,200]
         self.position = self.startPosition
-        self.pic = pygame.image.load("../images/balloon.png")   
+        self.path = "../images/balloon.png"
+        self.pic = pygame.image.load(self.path)   
             
             

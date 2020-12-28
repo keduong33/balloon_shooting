@@ -1,2 +1,2 @@
 # balloon_shooting
-In order to run the game, ./code/main.py (run the main.py file)
+In order to run the game, go to balloon_shooting/code and python main.py
